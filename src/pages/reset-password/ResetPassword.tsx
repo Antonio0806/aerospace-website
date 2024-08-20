@@ -3,9 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '../../contants/routes';
 import { WelcomeContent } from '../../content/welcome-content/WelcomeContent';
 import { HalfLayout } from '../../layouts/half-layout/HalfLayout';
+import { useState } from 'react';
+import { sendThePassResetEmail } from '../../firebase';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleEmailChange = (event: any) => {
+    setEmail(event.target.value);
+  };
+  const sendTheVerificationEmail = async () => {
+    try {
+      const result = await sendThePassResetEmail(email);
+      console.log(result);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <HalfLayout>
@@ -16,9 +31,9 @@ export const ResetPassword = () => {
         </Typography>
         <Typography variant={'body1'}>Enter an email associated with your account.</Typography>
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Email'} />
+          <TextField fullWidth placeholder={'Email'} onChange={handleEmailChange} />
         </FormControl>
-        <Button variant={'contained'} fullWidth onClick={() => navigate(routes.dashboard)}>
+        <Button variant={'contained'} fullWidth onClick={() => sendTheVerificationEmail}>
           Reset password
         </Button>
         <Divider sx={{ width: '100%' }} />

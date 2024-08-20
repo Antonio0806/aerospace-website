@@ -53,9 +53,6 @@ export const UserForm = ({ defaultValues, submitButtonText = 'Save changes' }: P
                   alt={userFormValues.username}
                 />
                 <Stack justifyContent={'center'}>
-                  <Typography textAlign={'center'} component={'p'} variant={'subtitle1'}>
-                    {userFormValues.firstName} {userFormValues.lastName}
-                  </Typography>
                   <Typography textAlign={'center'} component={'p'} variant={'subtitle2'}>
                     {userFormValues.username}
                   </Typography>
@@ -82,30 +79,6 @@ export const UserForm = ({ defaultValues, submitButtonText = 'Save changes' }: P
                 <Stack direction={'row'} spacing={4}>
                   <FormControl fullWidth>
                     <TextField
-                      error={!!errors[AccountGeneralFieldsNames.firstName]}
-                      {...register(AccountGeneralFieldsNames.firstName)}
-                      label={'First name'}
-                      size={'medium'}
-                    />
-                    {errors[AccountGeneralFieldsNames.firstName] ? (
-                      <FormHelperText error>{errors[AccountGeneralFieldsNames.firstName].message}</FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      error={!!errors[AccountGeneralFieldsNames.lastName]}
-                      {...register(AccountGeneralFieldsNames.lastName)}
-                      label={'Last name'}
-                      size={'medium'}
-                    />
-                    {errors[AccountGeneralFieldsNames.lastName] ? (
-                      <FormHelperText error>{errors[AccountGeneralFieldsNames.lastName].message}</FormHelperText>
-                    ) : null}
-                  </FormControl>
-                </Stack>
-                <Stack direction={'row'} spacing={4}>
-                  <FormControl fullWidth>
-                    <TextField
                       error={!!errors[AccountGeneralFieldsNames.username]}
                       {...register(AccountGeneralFieldsNames.username)}
                       label={'Username'}
@@ -124,32 +97,6 @@ export const UserForm = ({ defaultValues, submitButtonText = 'Save changes' }: P
                     />
                     {errors[AccountGeneralFieldsNames.email] ? (
                       <FormHelperText error>{errors[AccountGeneralFieldsNames.email].message}</FormHelperText>
-                    ) : null}
-                  </FormControl>
-                </Stack>
-                <Stack direction={'row'} spacing={4}>
-                  <FormControl fullWidth>
-                    <TextField
-                      type={'date'}
-                      error={!!errors[AccountGeneralFieldsNames.birthDate]}
-                      {...register(AccountGeneralFieldsNames.birthDate)}
-                      InputLabelProps={{ shrink: true }}
-                      label={'Birth date'}
-                      size={'medium'}
-                    />
-                    {errors[AccountGeneralFieldsNames.birthDate] ? (
-                      <FormHelperText error>{errors[AccountGeneralFieldsNames.birthDate].message}</FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      error={!!errors[AccountGeneralFieldsNames.age]}
-                      {...register(AccountGeneralFieldsNames.age)}
-                      label={'Age'}
-                      size={'medium'}
-                    />
-                    {errors[AccountGeneralFieldsNames.age] ? (
-                      <FormHelperText error>{errors[AccountGeneralFieldsNames.age].message}</FormHelperText>
                     ) : null}
                   </FormControl>
                 </Stack>

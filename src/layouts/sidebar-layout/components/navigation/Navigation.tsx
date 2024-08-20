@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/react-in-jsx-scope */
 import List from '@mui/material/List';
 import { NavigationItem } from './components/navigation-item/NavigationItem';
 import { NavigationItemType } from './components/navigation-item/types';
@@ -7,7 +6,6 @@ import { routes } from '../../../../contants/routes';
 import {
   Abc,
   AccountBoxOutlined,
-  CalendarMonthOutlined,
   ConstructionOutlined,
   DashboardOutlined,
   DesignServicesOutlined,
@@ -15,7 +13,6 @@ import {
   QuestionMarkOutlined,
   ShapeLineOutlined,
   SystemUpdate,
-  ViewStreamOutlined,
 } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { useNotifications } from '../../../../hooks/api/use-notifications/useNotifications';
@@ -44,22 +41,6 @@ export function Navigation() {
           {
             path: routes.userAccount,
             label: 'Account',
-          },
-          {
-            path: routes.userProfile,
-            label: 'Profile',
-          },
-          {
-            path: routes.userList,
-            label: 'List',
-          },
-          {
-            path: routes.userEdit,
-            label: 'Edit',
-          },
-          {
-            path: routes.userCreate,
-            label: 'Create',
           },
         ],
       },
@@ -115,14 +96,6 @@ export function Navigation() {
         ],
       },
       {
-        header: 'Apps',
-      },
-      {
-        path: routes.calendar,
-        label: 'Calendar',
-        icon: (props: any) => <CalendarMonthOutlined {...props} />,
-      },
-      {
         header: 'Documentation',
       },
       {
@@ -148,61 +121,6 @@ export function Navigation() {
             label: 'Button',
           },
         ],
-      },
-      {
-        header: 'Navigation',
-      },
-      {
-        path: '',
-        label: 'Number',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: `${notifications?.notifications?.length}`,
-        badgeColor: 'primary',
-      },
-      {
-        path: '',
-        label: 'Description',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: 'New',
-        badgeColor: 'info',
-        description: 'This is a description',
-      },
-      {
-        path: '',
-        label: 'Disabled',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeColor: 'info',
-        disabled: true,
-        description: 'This is a disabled item',
-      },
-      {
-        path: '',
-        label: 'Color primary',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: 'New',
-        badgeColor: 'primary',
-      },
-      {
-        path: '',
-        label: 'Color secondary',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: 'New',
-        badgeColor: 'secondary',
-      },
-      {
-        path: '',
-        label: 'Color info',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: 'New',
-        badgeColor: 'info',
-      },
-      {
-        path: '',
-        label: 'Very long text as a link text',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: 'New',
-        badgeColor: 'info',
-        external: true,
       },
     ],
     [notifications?.notifications?.length],

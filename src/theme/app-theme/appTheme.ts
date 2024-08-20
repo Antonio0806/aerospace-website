@@ -23,6 +23,7 @@ export const appTheme = (mode: 'light' | 'dark') => {
       },
       error: {
         main: red['A400'],
+        dark: red['A200'],
       },
       info: {
         main: lightBlue['A400'],
@@ -41,19 +42,7 @@ export const appTheme = (mode: 'light' | 'dark') => {
     },
     spacing: 8,
     typography: {
-      fontFamily: [
-        'Noto Sans',
-        '"Source Sans Pro"',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
+      fontFamily: ['Roboto', '"Segoe UI Emoji"', '"Segoe UI Symbol"'].join(','),
       fontWeightMedium: 600,
       fontWeightBold: 700,
       h1: {

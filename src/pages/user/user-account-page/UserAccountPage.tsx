@@ -1,12 +1,12 @@
 import { Box, Container, Tab, TabProps, Tabs } from '@mui/material';
 import { PageHeader } from '../../../components/page-header/PageHeader';
 import React from 'react';
-import { Person, Settings, Share } from '@mui/icons-material';
-import { SocialLinksForm } from '../components/social-links-form/SocialLinksForm';
+import { Person, Settings } from '@mui/icons-material';
 import { AccountSettingsForm } from '../components/account-settings-form/AccountSettingsForm';
 import { UserForm } from '../components/user-form/UserForm';
-import { useCurrentUser } from '../../../hooks/api/use-current-user/useCurrentUser';
 import { Loader } from '../../../components/loader/Loader';
+import useAuth from '../../../hooks/api/use-auth/useAuth';
+import { UserFormDefaultValues } from '../components/user-form/types/userFormDefaultValues';
 
 function a11yProps(index: number) {
   return {
@@ -39,7 +39,7 @@ function TabPanel(props: TabPanelProps) {
 
 export const UserAccountPage = () => {
   const [value, setValue] = React.useState(0);
-  const { data: user, isLoading } = useCurrentUser();
+  const auth = useAuth();
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -49,24 +49,16 @@ export const UserAccountPage = () => {
     sx: { minHeight: 42, textTransform: 'capitalize' },
     iconPosition: 'start',
   };
-
-  console.log(user);
-
-  const defaultValues = user
+  const defaultValues: UserFormDefaultValues = auth.user
     ? {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        username: user.username,
-        image: user.image,
-        age: user.age,
-        birthDate: user.birthDate,
+        email: auth.user.email,
+        phone: auth.user.phoneNumber,
+        username: auth.user.displayName,
+        image: auth.user.photoURL,
       }
     : undefined;
 
-  if (isLoading || !user) return <Loader />;
-
+  if (auth.loading || !auth.user) return <Loader />;
   return (
     <Container maxWidth='lg'>
       <PageHeader title={'User account'} breadcrumbs={['User', 'Account']} />
@@ -74,17 +66,13 @@ export const UserAccountPage = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label='basic tabs example'>
             <Tab {...tabProps} icon={<Person />} label='General' {...a11yProps(0)} />
-            <Tab {...tabProps} icon={<Share />} label='Social links' {...a11yProps(1)} />
-            <Tab {...tabProps} icon={<Settings />} label='Settings' {...a11yProps(2)} />
+            <Tab {...tabProps} icon={<Settings />} label='Settings' {...a11yProps(1)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
           <UserForm defaultValues={defaultValues} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <SocialLinksForm />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
           <AccountSettingsForm />
         </TabPanel>
       </Box>

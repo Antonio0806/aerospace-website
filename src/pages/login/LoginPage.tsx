@@ -1,18 +1,51 @@
 import { Button, Divider, FormControl, Link, Stack, TextField, Typography } from '@mui/material';
-import { Facebook, Google } from '@mui/icons-material';
+import { GitHub } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../contants/routes';
 import { WelcomeContent } from '../../content/welcome-content/WelcomeContent';
 import { HalfLayout } from '../../layouts/half-layout/HalfLayout';
-import { useLogto } from '@logto/react';
+import { useState } from 'react';
+import useNotification from '../../hooks/api/use-notification/useNotification';
+import NotificationBox from '../../components/notification/NotificationBox';
+import useAuth from '../../hooks/api/use-auth/useAuth';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { signIn, isAuthenticated } = useLogto();
+  const auth = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { visible, text, showNotification } = useNotification();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleEmailChange = (event: any) => {
+    setEmail(event.target.value);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePasswordChange = (event: any) => {
+    setPassword(event.target.value);
+  };
+  const handleLogin = async () => {
+    if (!email || !password) {
+      console.error('Provide Email and Password');
+      showNotification('Provide Email and Password', 1500);
+      return;
+    }
 
-  if (isAuthenticated) {
-    return <div>Signed in</div>;
-  }
+    auth
+      .login(email, password)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .then((userCredential) => {
+        if (auth.user) {
+          console.log('user stored in auth context: ' + auth.user);
+          console.log('user credential returned by the function: ' + userCredential);
+          navigate('/');
+        }
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .catch((error: any) => {
+        console.log(error);
+        //showNotification(error, 1500);
+      });
+  };
   return (
     <HalfLayout>
       <WelcomeContent />
@@ -21,24 +54,22 @@ export const LoginPage = () => {
           Hello,
         </Typography>
         <Typography variant={'body1'}>Enter your credentials below</Typography>
+        <NotificationBox visible={visible} text={text} />
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Email'} />
+          <TextField fullWidth placeholder={'Email'} onChange={handleEmailChange} />
         </FormControl>
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Password'} type={'password'} />
+          <TextField fullWidth placeholder={'Password'} type={'password'} onChange={handlePasswordChange} />
         </FormControl>
 
-        <Button variant={'contained'} fullWidth onClick={() => signIn('http://localhost:5173/callback')}>
+        <Button variant={'contained'} fullWidth onClick={() => handleLogin()}>
           Login
         </Button>
         <Divider sx={{ width: '100%' }} />
         <Typography variant={'body2'}>Or login with</Typography>
         <Stack direction={'row'} spacing={1}>
-          <Button variant={'outlined'} startIcon={<Google />}>
-            Google
-          </Button>
-          <Button variant={'outlined'} startIcon={<Facebook />}>
-            Facebook
+          <Button variant={'outlined'} startIcon={<GitHub />}>
+            GitHub
           </Button>
         </Stack>
         <Stack spacing={1}>

@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { TypographyPage } from './docs/pages/typography-page/TypographyPage';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { routes } from './contants/routes';
 import { ColorsPage } from './docs/pages/colors-page/ColorsPage';
 import { UserAccountPage } from './pages/user/user-account-page/UserAccountPage';
@@ -9,11 +9,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCurrentUser } from './hooks/api/use-current-user/useCurrentUser';
 import { Loader } from './components/loader/Loader';
 import { ButtonPage } from './docs/pages/button-page/ButtonPage';
-import { UserProfilePage } from './pages/user/user-profile-page/UserProfilePage';
-import { UserListPage } from './pages/user/user-list-page/UserListPage';
-import { UserCreatePage } from './pages/user/user-create-page/UserCreatePage';
-import Callback from './components/others/Callback.tsx';
-import { CalendarPage } from './pages/calendar/Calendar';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
 import { MaintenancePage } from './pages/maintenance/MaintenancePage';
 import { OrderList } from './pages/orders/orders-list/OrdersList';
@@ -26,18 +21,18 @@ import React, { useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { getThemeByName } from './theme/theme.ts';
 import { SidebarLayout } from './layouts/sidebar-layout/SidebarLayout.tsx';
-import { UserEditPage } from './pages/user/user-edit-page/UserEditPage.tsx';
-
-import { LogtoProvider, LogtoConfig } from '@logto/react';
+import ProtectedRoute from './components/protected-route/ProtectedRoute.tsx';
+import { AuthProvider } from './hooks/api/use-auth/useAuth.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
       <SidebarLayout>
-        <Outlet />
+        <ProtectedRoute />
       </SidebarLayout>
     ),
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: routes.dashboard,
@@ -46,22 +41,6 @@ const router = createBrowserRouter([
       {
         path: routes.userAccount,
         element: <UserAccountPage />,
-      },
-      {
-        path: routes.userProfile,
-        element: <UserProfilePage />,
-      },
-      {
-        path: routes.userList,
-        element: <UserListPage />,
-      },
-      {
-        path: routes.userEdit,
-        element: <UserEditPage />,
-      },
-      {
-        path: routes.userCreate,
-        element: <UserCreatePage />,
       },
       {
         path: routes.themeColors,
@@ -74,10 +53,6 @@ const router = createBrowserRouter([
       {
         path: routes.componentsButton,
         element: <ButtonPage />,
-      },
-      {
-        path: routes.calendar,
-        element: <CalendarPage />,
       },
       {
         path: routes.ordersList,
@@ -109,16 +84,11 @@ const router = createBrowserRouter([
     path: routes.verifyCode,
     element: <VerifyCode />,
   },
-  {
-    path: routes.callback,
-    element: <Callback />,
-  },
 ]);
 
 const queryClient = new QueryClient();
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
 const AppRouter = () => {
   const { data: user, isLoading } = useCurrentUser();
 
@@ -140,27 +110,23 @@ export function App() {
     }),
     [],
   );
-  const config: LogtoConfig = {
-    endpoint: 'https://5ujc48.logto.app/',
-    appId: 'h3yenuhj1if5hdmnrdvg8',
-  };
 
   const theme = getThemeByName(themeName, mode);
 
   return (
-    <LogtoProvider config={config}>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Analytics />
-          <QueryClientProvider client={queryClient}>
-            <>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Analytics />
+        <QueryClientProvider client={queryClient}>
+          <>
+            <AuthProvider>
               <AppRouter />
               <ThemeConfigurator setThemeName={setThemeName} themeName={themeName} />
-            </>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </LogtoProvider>
+            </AuthProvider>
+          </>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }

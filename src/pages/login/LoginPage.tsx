@@ -33,10 +33,9 @@ export const LoginPage = () => {
     auth
       .login(email, password)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((userCredential) => {
+      .then((_userCredential) => {
         if (auth.user) {
-          console.log('user stored in auth context: ' + auth.user);
-          console.log('user credential returned by the function: ' + userCredential);
+          console.log('user email stored in auth context: ' + auth.user.email);
           navigate('/');
         }
       })

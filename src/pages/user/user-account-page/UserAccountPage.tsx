@@ -51,10 +51,10 @@ export const UserAccountPage = () => {
   };
   const defaultValues: UserFormDefaultValues = auth.user
     ? {
-        email: auth.user.email,
-        phone: auth.user.phoneNumber,
-        username: auth.user.displayName,
-        image: auth.user.photoURL,
+        email: auth.user.email || 'N/A',
+        phone: auth.user.phoneNumber || 'N/A',
+        username: auth.user.displayName || 'N/A',
+        image: auth.user.photoURL || 'https://i.imgur.com/P8nOheS.png',
       }
     : undefined;
 

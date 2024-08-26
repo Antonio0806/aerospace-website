@@ -11,11 +11,11 @@ export const Dashboard = () => {
       <CVA />
       <Grid container spacing={4}>
         <Grid container item xs={12} md={12} spacing={2}>
-          <Grid item xs={6} display={'flex'}>
-            <WelcomeWidget title={'Welcome'} description={'This is an example sentence to welcome a user'} />
-          </Grid>
-          <Grid item xs={6} display={'flex'}>
-            <WelcomeWidget title={'Welcome'} description={'This is an example sentence to welcome a user'} />
+          <Grid item xs={12} display={'flex'}>
+            <WelcomeWidget
+              title={'Welcome'}
+              description={'Welcome to aerospace. Learn how to set up your new dev environement here.'}
+            />
           </Grid>
         </Grid>
 

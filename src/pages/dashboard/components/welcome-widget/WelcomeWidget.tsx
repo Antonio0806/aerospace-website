@@ -16,7 +16,10 @@ export const WelcomeWidget = ({ title, description }: WelcomeWidgetProps) => {
         <Typography variant={'body1'} mb={1}>
           {description}
         </Typography>
-        <Button color={'primary'} variant={'outlined'} size={'small'}>
+        {
+          // TODO: Make the button navigate to a documentation website
+        }
+        <Button color={'primary'} variant={'outlined'} size={'small'} onClick={() => {}}>
           Documentation
         </Button>
       </WelcomeWidgetContent>

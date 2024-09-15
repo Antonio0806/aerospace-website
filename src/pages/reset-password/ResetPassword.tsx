@@ -5,6 +5,7 @@ import { WelcomeContent } from '../../content/welcome-content/WelcomeContent';
 import { HalfLayout } from '../../layouts/half-layout/HalfLayout';
 import { useState } from 'react';
 import { sendThePassResetEmail } from '../../firebase';
+import consola from 'consola';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
@@ -16,9 +17,9 @@ export const ResetPassword = () => {
   const sendTheVerificationEmail = async () => {
     try {
       const result = await sendThePassResetEmail(email);
-      console.log(result);
+      consola.log(result);
     } catch (e) {
-      console.error(e);
+      consola.error(e);
     }
   };
 

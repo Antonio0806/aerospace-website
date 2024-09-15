@@ -8,6 +8,7 @@ import { useState } from 'react';
 import useNotification from '../../hooks/api/use-notification/useNotification';
 import NotificationBox from '../../components/notification/NotificationBox';
 import useAuth from '../../hooks/api/use-auth/useAuth';
+import { consola } from 'consola';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -24,8 +25,9 @@ export const LoginPage = () => {
     setPassword(event.target.value);
   };
   const handleLogin = async () => {
+    consola.info('Starting the login flow.');
     if (!email || !password) {
-      console.error('Provide Email and Password');
+      consola.warn('Email and/or password not provided');
       showNotification('Provide Email and Password', 1500);
       return;
     }
@@ -35,13 +37,14 @@ export const LoginPage = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_userCredential) => {
         if (auth.user) {
-          console.log('user email stored in auth context: ' + auth.user.email);
+          consola.info('User email stored in auth context: ' + auth.user.email);
+          consola.info('Login successfull');
           navigate('/');
         }
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .catch((error: any) => {
-        console.log(error);
+        consola.error(error);
         //showNotification(error, 1500);
       });
   };

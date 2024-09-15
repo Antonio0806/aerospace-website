@@ -9,6 +9,7 @@ import { browserSessionPersistence, createUserWithEmailAndPassword, setPersisten
 import { auth } from '../../firebase';
 import NotificationBox from '../../components/notification/NotificationBox';
 import useNotification from '../../hooks/api/use-notification/useNotification';
+import { consola } from 'consola';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -33,13 +34,13 @@ export const RegisterPage = () => {
   const handleSignup = async () => {
     //handling login logic with Firebase
     if (!email || !password) {
-      console.error('Provide Email and Password');
+      consola.warn('Provide Email and Password');
       showNotification('Provide Email and Password', 1500);
       return;
     }
     if (password !== repeatPassword) {
-      console.error('The password and repeat passwords are not equal.');
-      showNotification('The password and repeat passwords are not equal.', 1500);
+      consola.warn('The password and repeat passwords are not the same.');
+      showNotification('The password and repeat passwords are not the same.', 1500);
       return;
     }
     setPersistence(auth, browserSessionPersistence)
@@ -48,9 +49,9 @@ export const RegisterPage = () => {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
           const user = userCredential.user;
-          console.log(user);
           if (user) {
             //user logged in succesfully i need to add more like login logic to make this shit more secure, for now i will just redirect to the dashboard ;)
+            consola.info('Login succesfull, redirecting...');
             navigate(routes.dashboard);
           }
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,13 +59,13 @@ export const RegisterPage = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           showNotification(errorMessage, 1500);
-          console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+          consola.error('errorCode:', errorCode, 'errorMessage:', errorMessage);
         }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+        consola.error('errorCode:', errorCode, 'errorMessage:', errorMessage);
       });
   };
   return (
